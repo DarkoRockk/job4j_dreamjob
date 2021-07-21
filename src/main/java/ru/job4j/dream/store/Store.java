@@ -45,4 +45,9 @@ public class Store {
         post.setCreated(Calendar.getInstance());
         posts.put(post.getId(), post);
     }
+
+    public void addCandidate(Candidate candidate) {
+        candidate.setId(POST_ID.incrementAndGet());
+        candidates.put(candidate.getId(), candidate);
+    }
 }
