@@ -41,13 +41,24 @@ public class Store {
     }
 
     public void save(Post post) {
-        post.setId(POST_ID.incrementAndGet());
+        if (post.getId() == 0) {
+            post.setId(POST_ID.incrementAndGet());
+        }
         post.setCreated(Calendar.getInstance());
         posts.put(post.getId(), post);
     }
 
     public void addCandidate(Candidate candidate) {
-        candidate.setId(POST_ID.incrementAndGet());
+        if (candidate.getId() == 0) {
+            candidate.setId(POST_ID.incrementAndGet());
+        }
         candidates.put(candidate.getId(), candidate);
+    }
+
+    public Post findPostById(int id) {
+        return posts.get(id);
+    }
+    public Candidate findCanById(int id) {
+        return candidates.get(id);
     }
 }
