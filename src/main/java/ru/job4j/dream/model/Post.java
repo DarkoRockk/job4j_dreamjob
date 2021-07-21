@@ -10,11 +10,10 @@ public class Post {
     private String description;
     private Calendar created;
 
-    public Post(int id, String name, String description, Calendar created) {
+    public Post(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.created = created;
     }
 
     public int getId() {
