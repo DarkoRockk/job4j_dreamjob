@@ -1,7 +1,7 @@
 package ru.job4j.dream.servlet;
 
 import ru.job4j.dream.model.Candidate;
-import ru.job4j.dream.store.Store;
+import ru.job4j.dream.store.PsqlStore;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,7 +15,7 @@ public class CandidateServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("candidates", Store.instOf().findAllCandidates());
+        req.setAttribute("candidates", PsqlStore.instOf().findAllCandidates());
         req.getRequestDispatcher("candidates.jsp").forward(req, resp);
     }
 
@@ -23,14 +23,14 @@ public class CandidateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         if ("delete".equals(req.getParameter("method"))) {
-            Store.instOf().removeCandidate(Integer.parseInt(req.getParameter("id")));
+            PsqlStore.instOf().removeCandidate(Integer.parseInt(req.getParameter("id")));
             File file = new File("/Users/darkorockk/IdeaProjects/job4j_dreamjob/images/" + req.getParameter("id") + ".png");
             if (file.exists()) {
                 Files.delete(file.toPath());
             }
             resp.sendRedirect(req.getContextPath() + "/candidates.do");
         } else {
-            Store.instOf().addCandidate(new Candidate(Integer.parseInt(req.getParameter("id")),
+            PsqlStore.instOf().addCandidate(new Candidate(Integer.parseInt(req.getParameter("id")),
                     req.getParameter("name")));
             resp.sendRedirect(req.getContextPath() + "/candidates.do");
         }
