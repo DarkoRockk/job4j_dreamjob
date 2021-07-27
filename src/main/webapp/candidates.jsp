@@ -39,15 +39,24 @@
                     </thead>
                     <tbody>
                     <c:forEach items="${candidates}" var="candidate">
-                                            <tr>
-                                                <td>
-                                                    <a href='<c:url value="/candidate/edit.jsp?id=${candidate.id}"/>'>
-                                                        <i class="fa fa-edit mr-3"></i>
-                                                    </a>
-                                                    <c:out value="${candidate.name}"/>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
+                        <tr>
+                             <td>
+                                 <a href='<c:url value="/candidate/edit.jsp?id=${candidate.id}"/>'>
+                                      <i class="fa fa-edit mr-3"></i>
+                                 </a>
+                                 <c:out value="${candidate.name}"/>
+                                 <img src="<c:url value='/download?id=${candidate.id}'/>" width="50px"
+                                                                      height="50px" alt="Фото кандидата"/>
+                                 <a href='<c:url value="/candidate/photoUpload.jsp?id=${candidate.id}"/>'>
+                                      <button>Добавить</button>
+                                 </a>
+                                 <form style= "display: inline" action="<c:url value='/candidates.do?id=${candidate.id}&method=delete'/>"
+                                 method = "post">
+                                       <button>Удалить</button>
+                                 </form>
+                             </td>
+                         </tr>
+                    </c:forEach>
                     </tbody>
                 </table>
             </div>
