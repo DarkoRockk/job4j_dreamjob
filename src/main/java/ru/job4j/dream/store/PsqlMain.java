@@ -13,7 +13,6 @@ public class PsqlMain {
         }
         Thread.sleep(1000);
         store.addCandidate(new Candidate(0, "Java Junior"));
-        //store.addCandidate(new Candidate(0, "Java Middle"));
         for (Candidate can : store.findAllCandidates()) {
             System.out.println(can.getId() + " " + can.getName());
         }
@@ -22,5 +21,6 @@ public class PsqlMain {
         for (Candidate can : store.findAllCandidates()) {
             System.out.println(can.getId() + " " + can.getName());
         }
+        System.out.println(store.findById(2).toString());
     }
 }

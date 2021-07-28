@@ -13,10 +13,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PsqlStore implements Store {
     private final BasicDataSource pool = new BasicDataSource();
-
+    private static final Logger LOG = LoggerFactory.getLogger(PsqlStore.class.getName());
     private PsqlStore() {
         Properties cfg = new Properties();
         try (BufferedReader io = new BufferedReader(
@@ -60,7 +62,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception detected: ", e);
         }
         return posts;
     }
@@ -77,7 +79,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception detected: ", e);
         }
         return candidates;
     }
@@ -113,7 +115,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception detected: ", e);
         }
         return post;
     }
@@ -128,7 +130,7 @@ public class PsqlStore implements Store {
             ps.setInt(3, post.getId());
             ps.execute();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception detected: ", e);
         }
     }
 
@@ -144,7 +146,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception detected: ", e);
         }
         return candidate;
     }
@@ -158,7 +160,7 @@ public class PsqlStore implements Store {
             ps.setInt(2, candidate.getId());
             ps.execute();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception detected: ", e);
         }
     }
 
@@ -171,13 +173,24 @@ public class PsqlStore implements Store {
             ps.setInt(1, id);
             ps.execute();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception detected: ", e);
         }
     }
 
 
     @Override
     public Post findById(int id) {
-        return null;
+        Post rsl = null;
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("SELECT * FROM post WHERE id = ?")
+        ) {
+            ps.setInt(1, id);
+            ResultSet it = ps.executeQuery();
+            it.next();
+            rsl = new Post(it.getInt("id"), it.getString("name"), it.getString("description"));
+        } catch (Exception e) {
+            LOG.error("Exception detected: ", e);
+        }
+        return rsl;
     }
 }
