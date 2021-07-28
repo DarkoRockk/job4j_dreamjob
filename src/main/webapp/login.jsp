@@ -1,6 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="ru.job4j.dream.store.PsqlStore" %>
-<%@ page import="ru.job4j.dream.model.Candidate" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -21,30 +19,29 @@
     <title>Работа мечты</title>
 </head>
 <body>
-<%
-    String id = request.getParameter("id");
-    Candidate candidate = new Candidate(0, "");
-    if (id != null) {
-        candidate = PsqlStore.instOf().findCanById(Integer.valueOf(id));
-    }
-%>
 <div class="container pt-3">
+
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                <% if (id == null) { %>
-                                    Новый кандидат.
-                                <% } else { %>
-                                    Редактирование кандидата.
-                                <% } %>
+                Авторизация
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/candidates.do?id=<%=candidate.getId()%>" method="post">
+                <form action="<%=request.getContextPath()%>/auth.do" method="post">
                     <div class="form-group">
-                    <label>Имя</label>
-                    <input type="text" class="form-control" name="name" value="<%=candidate.getName()%>">
+                        <label>Почта</label>
+                        <input type="text" class="form-control" name="email">
                     </div>
-                <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <input type="text" class="form-control" name="password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                    <c:if test="${not empty error}">
+                        <div style="color:red; font-weight: bold; margin: 30px 0;">
+                            ${error}
+                        </div>
+                    </c:if>
                 </form>
             </div>
         </div>
