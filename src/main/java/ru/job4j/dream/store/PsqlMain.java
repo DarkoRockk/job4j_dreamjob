@@ -21,6 +21,6 @@ public class PsqlMain {
         for (Candidate can : store.findAllCandidates()) {
             System.out.println(can.getId() + " " + can.getName());
         }
-        System.out.println(store.findById(2).toString());
+        System.out.println(store.findPostById(2).toString());
     }
 }

@@ -5,6 +5,7 @@ import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Post;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +24,7 @@ public class PsqlStore implements Store {
     private PsqlStore() {
         Properties cfg = new Properties();
         try (BufferedReader io = new BufferedReader(
-                new FileReader("db.properties")
+                new FileReader("/Users/darkorockk/IdeaProjects/job4j_dreamjob/db.properties")
         )) {
             cfg.load(io);
         } catch (Exception e) {
@@ -180,7 +181,7 @@ public class PsqlStore implements Store {
 
 
     @Override
-    public Post findById(int id) {
+    public Post findPostById(int id) {
         Post rsl = null;
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement("SELECT * FROM post WHERE id = ?")
@@ -189,6 +190,22 @@ public class PsqlStore implements Store {
             ResultSet it = ps.executeQuery();
             it.next();
             rsl = new Post(it.getInt("id"), it.getString("name"), it.getString("description"));
+        } catch (Exception e) {
+            LOG.error("Exception detected: ", e);
+        }
+        return rsl;
+    }
+
+    @Override
+    public Candidate findCanById(int id) {
+        Candidate rsl = null;
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("SELECT * FROM candidates WHERE id = ?")
+        ) {
+            ps.setInt(1, id);
+            ResultSet it = ps.executeQuery();
+            it.next();
+            rsl = new Candidate(it.getInt("id"), it.getString("name"));
         } catch (Exception e) {
             LOG.error("Exception detected: ", e);
         }

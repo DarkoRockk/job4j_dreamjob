@@ -16,5 +16,7 @@ public interface Store {
 
     void removeCandidate(int id);
 
-    Post findById(int id);
+    Post findPostById(int id);
+
+    Candidate findCanById(int id);
 }
