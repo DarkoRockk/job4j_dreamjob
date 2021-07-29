@@ -32,7 +32,6 @@
     <servlet-name>DownloadServlet</servlet-name>
     <servlet-class>ru.job4j.dream.servlet.DownloadServlet</servlet-class>
   </servlet>
-
   <servlet-mapping>
     <servlet-name>DownloadServlet</servlet-name>
     <url-pattern>/download</url-pattern>
@@ -53,4 +52,13 @@
     <servlet-name>AuthServlet</servlet-name>
     <url-pattern>/auth.do</url-pattern>
   </servlet-mapping>
+  <filter>
+    <filter-name>AuthFilter</filter-name>
+    <filter-class>ru.job4j.dream.filter.AuthFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>AuthFilter</filter-name>
+    <url-pattern>*.do</url-pattern>
+  </filter-mapping>
 </web-app>
