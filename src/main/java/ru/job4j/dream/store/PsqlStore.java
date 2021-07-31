@@ -5,7 +5,6 @@ import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Post;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +15,7 @@ import java.util.List;
 import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.job4j.dream.model.User;
 
 public class PsqlStore implements Store {
     private final BasicDataSource pool = new BasicDataSource();
@@ -211,4 +211,92 @@ public class PsqlStore implements Store {
         }
         return rsl;
     }
+
+    @Override
+    public Collection<User> findAllUsers() {
+        List<User> users = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("SELECT * FROM users")
+        ) {
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
+                    User user = new User();
+                    user.setId(it.getInt("id"));
+                    user.setName(it.getString("name"));
+                    user.setEmail(it.getString("email"));
+                    user.setPassword(it.getString("password"));
+                    users.add(user);
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Exception detected: ", e);
+        }
+        return users;
+    }
+
+    private User createUser(User user) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("INSERT INTO users(name, email, password) VALUES (?, ?, ?)",
+                     PreparedStatement.RETURN_GENERATED_KEYS)
+        ) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.execute();
+            try (ResultSet id = ps.getGeneratedKeys()) {
+                if (id.next()) {
+                    user.setId(id.getInt(1));
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Exception detected: ", e);
+        }
+        return user;
+    }
+
+    private void updateUser(User user) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?", PreparedStatement.RETURN_GENERATED_KEYS)
+        ) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.setInt(4, user.getId());
+            ps.execute();
+        } catch (Exception e) {
+            LOG.error("Exception detected: ", e);
+        }
+    }
+
+    @Override
+    public void addUser(User user) {
+        if (user.getId() == 0) {
+            createUser(user);
+        } else {
+            updateUser(user);
+        }
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        User rsl = null;
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("SELECT * FROM users WHERE email = ?")
+        ) {
+            ps.setString(1, email);
+            ResultSet it = ps.executeQuery();
+            it.next();
+            rsl = new User();
+            rsl.setId(it.getInt("id"));
+            rsl.setName(it.getString("name"));
+            rsl.setEmail(it.getString("email"));
+            rsl.setPassword(it.getString("password"));
+        } catch (Exception e) {
+            LOG.error("Exception detected: ", e);
+        }
+        return rsl;
+    }
+
+
 }
