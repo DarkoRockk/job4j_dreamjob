@@ -46,19 +46,23 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Авторизация
+                Регистрация
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/auth.do" method="post">
+                <form action="<%=request.getContextPath()%>/reg.do" method="post">
                     <div class="form-group">
-                        <label>Почта</label>
+                        <label>Имя</label>
+                        <input type="text" class="form-control" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label>Адрес электронной почты</label>
                         <input type="text" class="form-control" name="email">
                     </div>
                     <div class="form-group">
                         <label>Пароль</label>
                         <input type="text" class="form-control" name="password">
                     </div>
-                    <button type="submit" class="btn btn-primary">Войти</button>
+                    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
                     <c:if test="${not empty error}">
                         <div style="color:red; font-weight: bold; margin: 30px 0;">
                             ${error}
