@@ -24,10 +24,5 @@ public class PsqlMain {
         user.setEmail("TestEmail");
         user.setPassword("TestPassword");
         store.addUser(user);
-        for (User us : store.findAllUsers()) {
-            System.out.println(us.getName());
-            System.out.println(us.getEmail());
-            System.out.println(us.getPassword());
-        }
     }
 }

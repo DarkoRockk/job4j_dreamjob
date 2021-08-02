@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.job4j.dream.model.User;
@@ -212,28 +213,6 @@ public class PsqlStore implements Store {
         return rsl;
     }
 
-    @Override
-    public Collection<User> findAllUsers() {
-        List<User> users = new ArrayList<>();
-        try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM users")
-        ) {
-            try (ResultSet it = ps.executeQuery()) {
-                while (it.next()) {
-                    User user = new User();
-                    user.setId(it.getInt("id"));
-                    user.setName(it.getString("name"));
-                    user.setEmail(it.getString("email"));
-                    user.setPassword(it.getString("password"));
-                    users.add(user);
-                }
-            }
-        } catch (Exception e) {
-            LOG.error("Exception detected: ", e);
-        }
-        return users;
-    }
-
     private User createUser(User user) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement("INSERT INTO users(name, email, password) VALUES (?, ?, ?)",
@@ -286,12 +265,13 @@ public class PsqlStore implements Store {
         ) {
             ps.setString(1, email);
             ResultSet it = ps.executeQuery();
-            it.next();
-            rsl = new User();
-            rsl.setId(it.getInt("id"));
-            rsl.setName(it.getString("name"));
-            rsl.setEmail(it.getString("email"));
-            rsl.setPassword(it.getString("password"));
+            if (it.next()) {
+                rsl = new User();
+                rsl.setId(it.getInt("id"));
+                rsl.setName(it.getString("name"));
+                rsl.setEmail(it.getString("email"));
+                rsl.setPassword(it.getString("password"));
+            }
         } catch (Exception e) {
             LOG.error("Exception detected: ", e);
         }

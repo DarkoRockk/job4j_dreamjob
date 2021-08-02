@@ -21,8 +21,6 @@ public interface Store {
 
     Candidate findCanById(int id);
 
-    Collection<User> findAllUsers();
-
     void addUser(User user);
 
     User findUserByEmail (String email);
