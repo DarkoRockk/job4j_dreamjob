@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class MemStore implements Store{
 
-    private static Store INST = new MemStore();
+    private static final Store INST = new MemStore();
 
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
 

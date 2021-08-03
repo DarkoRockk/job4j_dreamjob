@@ -16,6 +16,24 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script>
+        function validate() {
+        if ($('#name').val() == "") {
+        alert($('#name').attr('title'));
+        }
+        if ($('#surname').val() == "") {
+        alert($('#surname').attr('title'));
+        }
+        if ($('#sex').val() == "") {
+        alert($('#sex').attr('title'));
+        }
+        if ($('#description').val() == "") {
+        alert($('#description').attr('title'));
+        }
+       }
+
+
+    </script>
 </head>
 <body>
 <div class="container">
@@ -24,25 +42,25 @@
             <div class="card-body">
                 <form>
                     <div class="form-group">
-                        <label for="NameInput">Имя</label>
-                        <input type="text" class="form-control" id="NameInput">
+                        <label for="name">Имя</label>
+                        <input type="text" class="form-control" id="name" title="Введите имя">
                     </div>
                     <div class="form-group">
-                        <label for="SurnameInput">Фамилия</label>
-                        <input type="text" class="form-control" id="SurnameInput">
+                        <label for="surname">Фамилия</label>
+                        <input type="text" class="form-control" id="surname" title="Введите фамилию">
                     </div>
                     <div class="form-group">
-                        <label for="SexSelect">Пол</label>
-                        <select class="form-control" id="SexSelect">
+                        <label for="sex">Пол</label>
+                        <select class="form-control" id="sex" title="Выберите пол">
                             <option>муж</option>
                             <option>жен</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="DescriptionTextarea">Описание</label>
-                        <textarea class="form-control" id="DescriptionTextarea" rows="4"></textarea>
+                        <label for="description">Описание</label>
+                        <textarea class="form-control" id="description" rows="4" title="Добавьте описание"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="btn btn-primary" onclick="return validate();">Сохранить</button>
                 </form>
             </div>
         </div>
