@@ -38,6 +38,17 @@
         return rsl;
        }
 
+       function addRow() {
+    //получаем значение поля usr
+    const name = $('#name').val();
+    const surname = $('#surname').val();
+    const sex = $('#sex').val();
+    const description = $('#description').val();
+
+    //получаем ссылку на последний элемент в таблице.
+    //и после него добавляем html
+    $('#table tr:last').after('<tr><td>' + name + '</td><td>' + surname + '</td><td>' + sex + '</td><td>' + description + '</td></tr>');
+}
 
     </script>
 </head>
@@ -45,7 +56,6 @@
 <div class="container">
     <div class="row">
         <div class="card" style="width: 100%">
-            <div class="card-body">
                 <form>
                     <div class="form-group">
                         <label for="name">Имя</label>
@@ -67,16 +77,16 @@
                         <textarea class="form-control" id="description" rows="4" title="Добавьте описание"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary" onclick="return validate();">Сохранить</button>
+                    <button type="button" class="btn btn-primary" onclick="addRow();">Добавить строку</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 <div class="container-fluid">
-    <table class="table">
+    <table class="table" id="table">
         <thead class="thead-dark">
         <tr>
-            <th scope="col">#</th>
             <th scope="col">Имя</th>
             <th scope="col">Фамилия</th>
             <th scope="col">Пол</th>
@@ -85,7 +95,6 @@
         </thead>
         <tbody>
         <tr>
-            <th scope="row">1</th>
             <td>Иван</td>
             <td>Иванов</td>
             <td>муж</td>
