@@ -18,18 +18,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script>
         function validate() {
-        if ($('#name').val() == "") {
+        let rsl = true;
+        if ($('#name').val() === "") {
         alert($('#name').attr('title'));
+        rsl = false;
         }
-        if ($('#surname').val() == "") {
+        if ($('#surname').val() === "") {
         alert($('#surname').attr('title'));
+        rsl = false;
         }
-        if ($('#sex').val() == "") {
+        if ($('#sex').val() === "") {
         alert($('#sex').attr('title'));
+        rsl = false;
         }
-        if ($('#description').val() == "") {
+        if ($('#description').val() === "") {
         alert($('#description').attr('title'));
+        rsl = false;
         }
+        return rsl;
        }
 
 
