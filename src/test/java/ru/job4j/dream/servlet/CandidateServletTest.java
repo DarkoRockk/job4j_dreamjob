@@ -8,17 +8,16 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import ru.job4j.dream.model.Candidate;
-import ru.job4j.dream.model.Post;
 import ru.job4j.dream.store.MemStore;
 import ru.job4j.dream.store.PsqlStore;
 import ru.job4j.dream.store.Store;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 @RunWith(PowerMockRunner.class)
@@ -38,7 +37,8 @@ public class CandidateServletTest {
         PowerMockito.when(req.getParameter("id")).thenReturn("0");
         PowerMockito.when(req.getParameter("name")).thenReturn("n");
 
-        new CandidateServlet().doPost(req, resp);
+        CandidateServlet candidate = new CandidateServlet();
+        candidate.doPost(req, resp);
 
         Candidate result = store.findAllCandidates().iterator().next();
         Assert.assertThat(result.getName(), Is.is("n"));
